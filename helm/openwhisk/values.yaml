@@ -154,8 +154,8 @@ k8s:
 
 # Images used to run auxillary tasks/jobs
 utility:
-  imageName: "openwhisk/ow-utils"
-  imageTag: "b05b7ff"
+  imageName: "10.0.1.240:5000/whisk/ow-utils"
+  imageTag: "v1"
   imagePullPolicy: "IfNotPresent"
 
 # Docker registry
@@ -169,7 +169,7 @@ docker:
 # zookeeper configurations
 zookeeper:
   imageName: "zookeeper"
-  imageTag: "3.4"
+  imageTag: "3.4.12"
   imagePullPolicy: "IfNotPresent"
   # Note: Zookeeper's quorum protocol is designed to have an odd number of replicas.
   replicaCount: 1
@@ -189,8 +189,8 @@ zookeeper:
 
 # kafka configurations
 kafka:
-  imageName: "wurstmeister/kafka"
-  imageTag: "0.11.0.1"
+  imageName: "10.0.1.240:5000/kafka-arm64"
+  imageTag: "v1"
   imagePullPolicy: "IfNotPresent"
   replicaCount: 1
   restartPolicy: "Always"
@@ -204,8 +204,8 @@ db:
   # Should we run a Job to wipe and re-initialize the database when the chart is deployed?
   # This should always be true if external is false.
   wipeAndInit: true
-  imageName: "apache/couchdb"
-  imageTag: "2.3"
+  imageName: "treehouses/couchdb"
+  imageTag: "1.7.1"
   imagePullPolicy: "IfNotPresent"
   # NOTE: must be 1 (because initdb.sh enables single node mode)
   replicaCount: 1
@@ -238,9 +238,9 @@ nginx:
 
 # Controller configurations
 controller:
-  imageName: "openwhisk/controller"
-  imageTag: "b05b7ff"
-  imagePullPolicy: "IfNotPresent"
+  lean: false
+  imageName: "10.0.1.240:5000/whisk/controller"
+  imageTag: "v1"
   replicaCount: 1
   restartPolicy: "Always"
   port: 8080
@@ -250,8 +250,8 @@ controller:
 
 # Invoker configurations
 invoker:
-  imageName: "openwhisk/invoker"
-  imageTag: "b05b7ff"
+  imageName: "10.0.1.240:5000/whisk/invoker"
+  imageTag: "latest"
   imagePullPolicy: "IfNotPresent"
   restartPolicy: "Always"
   port: 8080
@@ -261,7 +261,7 @@ invoker:
   containerFactory:
     dind: false
     useRunc: false
-    impl: "docker"
+    impl: "kubernetes"
     enableConcurrency: false
     networkConfig:
       name: "bridge"
@@ -276,8 +276,8 @@ invoker:
     kubernetes:
       replicaCount: 1
       agent:
-        imageName: "openwhisk/kube-invoker-agent"
-        imageTag: "7314d75"
+        imageName: "10.0.1.240:5000/kube-invoker-agent-arm"
+        imageTag: "latest"
         imagePullPolicy: "IfNotPresent"
         enabled: false
         port: 3233
@@ -334,8 +334,8 @@ providers:
   # Alarm provider configurations
   alarm:
     enabled: true
-    imageName: "openwhisk/alarmprovider"
-    imageTag: "2.0.0-incubating"
+    imageName: "10.0.1.240:5000/alarm-provider-arm64"
+    imageTag: "latest"
     imagePullPolicy: "IfNotPresent"
     # NOTE: replicaCount > 1 doesn't work because of the PVC
     replicaCount: 1
@@ -347,8 +347,8 @@ providers:
   # Cloudant provider configurations
   cloudant:
     enabled: true
-    imageName: "openwhisk/cloudantprovider"
-    imageTag: "2.0.0-incubating"
+    imageName: "10.0.1.240:5000/cloudant-provider-arm64"
+    imageTag: "latest"
     imagePullPolicy: "IfNotPresent"
     # NOTE: replicaCount > 1 doesn't work because of the PVC
     replicaCount: 1
@@ -360,8 +360,8 @@ providers:
   # Kafka provider configurations
   kafka:
     enabled: true
-    imageName: "openwhisk/kafkaprovider"
-    imageTag: "2.0.0-incubating"
+    imageName: "10.0.1.240:5000/kafka-provider-arm64"
+    imageTag: "latest"
     imagePullPolicy: "IfNotPresent"
     # NOTE: setting replicaCount > 1 has not been tested and may not work
     replicaCount: 1

@@ -36,7 +36,7 @@
   image: "{{- .Values.docker.registry.name -}}busybox"
   imagePullPolicy: "IfNotPresent"
   # TODO: I haven't found an easy external test to determine that kafka is up, so as a hack we wait for zookeeper and then sleep for 10 seconds and cross our fingers!
-  command: ["sh", "-c", 'result=1; until [ $result -eq 0 ]; do OK=$(echo ruok | nc -w 1 {{ include "openwhisk.zookeeper_zero_host" . }} {{ .Values.zookeeper.port }}); if [ "$OK" == "imok" ]; then result=0; echo "zookeeper returned imok!"; else echo waiting for zookeeper to be ready; sleep 1; fi done; echo "Zookeeper is up; will wait for 10 seconds to give kafka time to initialize"; sleep 10;']
+  command: ["sh", "-c", 'result=1; until [ $result -eq 0 ]; do OK=$(echo ruok | nc -w 1 {{ include "openwhisk.zookeeper_zero_host" . }} {{ .Values.zookeeper.port }}); if [ "$OK" == "imok" ]; then result=0; echo "zookeeper returned imok!"; else echo waiting for zookeeper to be ready; sleep 1; fi done; echo "Zookeeper is up; will wait for 10 seconds to give kafka time to initialize"; sleep 30;']
 {{- end -}}
 
 {{/* Init container that waits for zookeeper to be ready */}}
@@ -66,5 +66,5 @@
   env:
   - name: "READINESS_URL"
     value: "http://{{ include "openwhisk.controller_host" . }}:{{ .Values.controller.port }}/invokers/healthy/count"
-  command: ["sh", "-c", "echo 0 > /tmp/count.txt; while true; do echo 'waiting for healthy invoker'; wget -T 5 -qO /tmp/count.txt --no-check-certificate \"$READINESS_URL\"; NUM_HEALTHY_INVOKERS=$(cat /tmp/count.txt); if [ $NUM_HEALTHY_INVOKERS -gt 0 ]; then echo \"Success: there are $NUM_HEALTHY_INVOKERS healthy invokers\"; break; fi; echo '...not ready yet; sleeping 3 seconds before retry'; sleep 3; done;"]
+  command: ["sh", "-c", "set -x; echo 0 > /tmp/count.txt; while true; do echo 'waiting for healthy invoker'; wget -T 5 -qO /tmp/count.txt --no-check-certificate \"$READINESS_URL\"; NUM_HEALTHY_INVOKERS=$(cat /tmp/count.txt); if [ $NUM_HEALTHY_INVOKERS -gt 0 ]; then echo \"Success: there are $NUM_HEALTHY_INVOKERS healthy invokers\"; break; fi; echo '...not ready yet; sleeping 3 seconds before retry'; sleep 3; done;"]
 {{- end -}}

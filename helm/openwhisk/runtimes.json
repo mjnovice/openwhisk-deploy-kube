@@ -33,9 +33,9 @@
                 "kind": "nodejs:10",
                 "default": true,
                 "image": {
-                    "prefix": "openwhisk",
-                    "name": "action-nodejs-v10",
-                    "tag": "1.14.0-incubating"
+                    "prefix": "10.0.1.240:5000",
+		    "name": "nodejs10action-arm",
+                    "tag": "v1"
                 },
                 "deprecated": false,
                 "attached": {

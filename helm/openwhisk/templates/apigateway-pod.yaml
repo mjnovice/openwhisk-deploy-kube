@@ -71,3 +71,5 @@ spec:
               configMapKeyRef:
                 name: {{ .Release.Name }}-whisk.config
                 key: whisk_api_host_url
+      imagePullSecrets:
+        - name: my-secret4

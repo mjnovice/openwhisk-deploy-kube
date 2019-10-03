@@ -79,7 +79,7 @@ spec:
 
         # zookeeper info
         - name: "KAFKA_ZOOKEEPER_CONNECT"
-          value: "{{ include "openwhisk.zookeeper_connect" . }}"
+          value: "owdev-zookeeper-0.owdev-zookeeper.openwhisk.svc.cluster.local:2181"
 
 
 {{/* PVCs created by volumeClaimTemplates must be manually removed; only create them if we absolutely need them */}}
