@@ -69,6 +69,7 @@ app: {{ template "openwhisk.fullname" . }}
 {{- $zkname := printf "%s-zookeeper" .Release.Name }}
 {{- $zkport := .Values.zookeeper.port }}
 {{- $kubeDomain := .Values.k8s.domain }}
+{{ $zkname }}-0.{{ $zkname }}.{{ $.Release.Namespace }}.svc.{{ $kubeDomain }}:{{ $zkport }}
 {{- range $i, $e := until (int .Values.zookeeper.replicaCount) -}}{{ if ne $i 0 }},{{ end }}{{ $zkname }}-{{ . }}.{{ $zkname }}.{{ $.Release.Namespace }}.svc.{{ $kubeDomain }}:{{ $zkport }}{{ end }}
 {{- end -}}
 
@@ -83,6 +84,7 @@ app: {{ template "openwhisk.fullname" . }}
 {{- $kname := printf "%s-kafka" .Release.Name }}
 {{- $kport := .Values.kafka.port }}
 {{- $kubeDomain := .Values.k8s.domain }}
+{{ $kname }}-0.{{ $kname }}.{{ $.Release.Namespace }}.svc.{{ $kubeDomain }}:{{ $kport }}
 {{- range $i, $e := until (int .Values.kafka.replicaCount) -}}{{ if ne $i 0 }},{{ end }}{{ $kname }}-{{ . }}.{{ $kname }}.{{ $.Release.Namespace }}.svc.{{ $kubeDomain }}:{{ $kport }}{{ end }}
 {{- end -}}
 
